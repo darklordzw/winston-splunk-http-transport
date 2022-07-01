@@ -12,7 +12,7 @@ describe("SplunkTransport", () => {
   describe("#constructor()", () => {
     let transport;
 
-    afterEach(done => {
+    afterEach((done) => {
       if (transport) {
         transport.close(done);
       }
@@ -20,7 +20,7 @@ describe("SplunkTransport", () => {
 
     it("should set defaults for unspecified options", () => {
       transport = new SplunkTransport({
-        splunk: { token }
+        splunk: { token },
       });
       transport.source.should.equal("winston");
       transport.sourcetype.should.equal("winston-splunk-http-transport");
@@ -44,8 +44,8 @@ describe("SplunkTransport", () => {
           maxBatchCount: 100,
           maxBatchSize: 2048,
           maxRetries: 0,
-          url: "http://wshtest-test.com:9090"
-        }
+          url: "http://wshtest-test.com:9090",
+        },
       });
       transport.source.should.equal("test-source");
       transport.sourcetype.should.equal("test-source-type");
@@ -66,7 +66,7 @@ describe("SplunkTransport", () => {
 
     before(() => {
       // Define a custom format.
-      const errorStackFormat = winston.format(info => {
+      const errorStackFormat = winston.format((info) => {
         if (info instanceof Error) {
           return { ...info, stack: info.stack, message: info.message };
         }
@@ -75,7 +75,7 @@ describe("SplunkTransport", () => {
 
       // Initialize the logger.
       transport = new SplunkTransport({
-        splunk: { token: "2042f3db-823f-4263-811e-fbf33349b3ee" }
+        splunk: { token: "2042f3db-823f-4263-811e-fbf33349b3ee" },
       });
       logger = winston.createLogger({
         level: "info",
@@ -83,7 +83,7 @@ describe("SplunkTransport", () => {
         format: winston.format.combine(
           errorStackFormat(),
           winston.format.json()
-        )
+        ),
       });
     });
 
@@ -93,9 +93,9 @@ describe("SplunkTransport", () => {
       }
     });
 
-    it("should allow the use of a custom formatter", done => {
+    it("should allow the use of a custom formatter", (done) => {
       // Mock the send.
-      transport.logger.send = payload => {
+      transport.logger.send = (payload) => {
         try {
           payload.message.level.should.equal("error");
           payload.message.message.should.equal("test");

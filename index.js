@@ -64,13 +64,13 @@ module.exports = class SplunkTransport extends Transport {
           : opts.splunk.maxRetries,
       level: opts.level || "info",
       token: opts.splunk.token,
-      url: opts.splunk.url || "https://localhost:8088"
+      url: opts.splunk.url || "https://localhost:8088",
     };
 
     this.logger = new Logger(splunkOptions);
 
     // We want winston to format our log messages, just pass them through directly.
-    this.logger.eventFormatter = message => message;
+    this.logger.eventFormatter = (message) => message;
     this.logger.error = () => {};
   }
 
@@ -89,12 +89,12 @@ module.exports = class SplunkTransport extends Transport {
       metadata: {
         source: this.source,
         sourcetype: this.sourcetype,
-        index: this.index
+        index: this.index,
       },
-      severity: info.level
+      severity: info.level,
     };
 
-    this.logger.send(payload, err => {
+    this.logger.send(payload, (err) => {
       if (err) {
         this.emit("warn", err);
       } else {
